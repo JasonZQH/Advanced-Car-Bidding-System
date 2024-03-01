@@ -1,3 +1,4 @@
+# Create your views here.
 from django.shortcuts import render
 from .models import User
 
@@ -8,9 +9,9 @@ def testmysql(request):
 
     context = {
     'user_id': user[0].userid,
-    'user_gender': user[3].gender,
+    'user_gender': user[0].gender,
     }
     return render(request, 'home.html', context)
 
 
-# Create your views here.
+

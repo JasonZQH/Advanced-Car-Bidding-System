@@ -9,23 +9,21 @@ from django.db import models
 
 
 class Admin(models.Model):
-    adminid = models.IntegerField(db_column='AdminID', blank=True, null=True)  # Field name made lowercase.
+    adminid = models.IntegerField(db_column='AdminID', primary_key=True)  # Field name made lowercase.
     ssn = models.CharField(db_column='SSN', max_length=11, blank=True, null=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=50, blank=True, null=True)  # Field name made lowercase.
     birthdate = models.DateField(db_column='Birthdate', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-    #     managed = False
+        managed = False
         db_table = 'ADMIN'
 
 
 class User(models.Model):
-    userid = models.IntegerField(db_column='UserID', blank=True, null=True)  # Field name made lowercase.
-    # userid = models.IntegerField(blank=True, null=True)
+    userid = models.IntegerField(db_column='UserID', primary_key=True)  # Field name made lowercase.
     fname = models.CharField(db_column='Fname', max_length=20, blank=True, null=True)  # Field name made lowercase.
     lname = models.CharField(db_column='Lname', max_length=20, blank=True, null=True)  # Field name made lowercase.
     gender = models.CharField(db_column='Gender', max_length=6, blank=True, null=True)  # Field name made lowercase.
-    # gender = models.CharField(max_length=6, blank=True, null=True)
     age = models.IntegerField(db_column='Age', blank=True, null=True)  # Field name made lowercase.
     phone = models.IntegerField(db_column='Phone', blank=True, null=True)  # Field name made lowercase.
     email = models.CharField(db_column='Email', max_length=100, blank=True, null=True)  # Field name made lowercase.
@@ -40,5 +38,5 @@ class User(models.Model):
     zip = models.IntegerField(db_column='Zip', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-    #     managed = False
+        managed = False
         db_table = 'USER'
