@@ -2,9 +2,56 @@
      <html lang="en">
      <head>
       <title>Test MySQL</title>
+      {% load static %}
+      <link rel="stylesheet" type="text/css" href="{% static 'gp8app/home.css' %}?v=2" />
      </head>
+
      <body>
-      <h1>User ID: {{ user_id }}</h1>
-      <h1>Gender: {{ user_gender }} </h1>
+       <div class="info-box">
+       <h1>GROUP: 8</h1>
+       <p>Group Member: Anning Tian, Pingyi Xu, Qinghao Zhang, Xinmeng Wu (Alphabetical Order)</p>
+       <p>Project Name: CarBidding System</p>
+       <p>Using the below search bar to search the User by entering the user ID</p>
+       </div>
+
+     </br>
+       <form action="" method="get">
+       <input type="text" name="search_query" placeholder="Enter User ID">
+       <input type="submit" value="Search">
+       </form>
+     </br>
+
+       <table>
+          <tr>
+            <th>User ID</th>
+            <td>{{ user_id }}</td>
+          </tr>
+          <tr>
+            <th>Gender</th>
+            <td>{{ user_gender }}</td>
+          </tr>
+          <tr>
+            <th>Age</th>
+            <td>{{ user_age }}</td>
+          </tr>
+          <tr>
+            <th>Phone</th>
+            <td>{{ user_phone }}</td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td>{{ user_email }}</td>
+          </tr>
+        </table>
+     </br>
+        
+      <button id="changeColor">Change Theme</button>
+     </br>
+     </br>
+      <img src="{% static 'gp8app/images/CarBidding.png' %}?v=1" class="EER" alt="EER Diagram">
+     </br>
+     </br>
+     </br>
+     <script src="{% static 'gp8app/home.js' %}?v=1"></script>
      </body>
      </html>
