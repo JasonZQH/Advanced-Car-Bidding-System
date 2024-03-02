@@ -82,7 +82,7 @@ if os.getenv('GAE_APPLICATION', None):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/db-002771431:us-central1:sql123',
+            'HOST': '/cloudsql/db-group8-415905:us-west1:group8-db',
             'USER': 'root',
             'PASSWORD': '',
             'NAME': 'CarBidding',
@@ -137,5 +137,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-# STATIC_ROOT = 'static'
+STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
