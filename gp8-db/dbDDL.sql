@@ -35,8 +35,7 @@ CREATE TABLE Auction (
     Auction_Period INT,
     Attend_User_ID INT,
     Start_User_ID INT,
-    FOREIGN KEY (Attend_User_ID) REFERENCES Users(User_ID),
-    FOREIGN KEY (Start_User_ID) REFERENCES Users(User_ID)
+    FOREIGN KEY (Attend_User_ID) REFERENCES Users(User_ID)
 );
 
 CREATE TABLE Bid (
