@@ -16,7 +16,6 @@ CREATE TABLE Users (
     FirstN VARCHAR(255),
     Seller BOOLEAN,
     Bidder BOOLEAN,
-    Privacy_Preference VARCHAR(255),
     Active_Date DATE,
     Street VARCHAR(255),
     State VARCHAR(255),
@@ -24,64 +23,24 @@ CREATE TABLE Users (
     Country VARCHAR(255)
 );
 
+CREATE TABLE UserPreference (
+	PreferenceID INT PRIMARY KEY,
+	User_ID INT,
+    Allowed_Sharing_Info BOOLEAN,
+    Allowed_Reciving_ADV BOOLEAN,
+    Allowed_Sending_Email BOOLEAN,
+    Allowed_Sending_text BOOLEAN,
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
+);
+
 CREATE TABLE Auction (
     Auction_ID INT PRIMARY KEY,
     Auction_Status VARCHAR(255),
     Start_Time DATETIME,
     End_Time DATETIME,
-    Start_Bid DECIMAL(10, 2),
-    Reserve_Price DECIMAL(10, 2),
-    Unsold BOOLEAN,
     Auction_Period INT,
     Attend_User_ID INT,
-    Start_User_ID INT,
     FOREIGN KEY (Attend_User_ID) REFERENCES Users(User_ID)
-);
-
-CREATE TABLE Bid (
-    Bid_ID INT PRIMARY KEY,
-    User_ID INT,
-    Auction_ID INT,
-    Bid_Amount DECIMAL(10, 2),
-    Bid_Time DATETIME,
-    VIN VARCHAR(17),
-    BIDWIN BOOLEAN,
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
-    FOREIGN KEY (Auction_ID) REFERENCES Auction(Auction_ID)
-);
-
-CREATE TABLE Orders (
-    Order_ID INT PRIMARY KEY,
-    Time DATETIME,
-    Bidder INT,
-    Seller INT,
-    O_Price DECIMAL(10, 2),
-    Payment_Method VARCHAR(255),
-    VIN VARCHAR(17),
-    Auction_ID INT,
-    FOREIGN KEY (Bidder) REFERENCES Users(User_ID),
-    FOREIGN KEY (Seller) REFERENCES Users(User_ID),
-    FOREIGN KEY (Auction_ID) REFERENCES Auction(Auction_ID)
-);
-
-CREATE TABLE UserFeedback (
-    Case_ID INT PRIMARY KEY,
-    Seller_ID INT,
-    FName VARCHAR(255),
-    LName VARCHAR(255),
-    Feedback VARCHAR(255),
-    Category VARCHAR(255),
-    ProvideFB_User_ID INT,
-    FOREIGN KEY (ProvideFB_User_ID) REFERENCES Users(User_ID)
-);
-
-CREATE TABLE Payment (
-    Payment_ID INT PRIMARY KEY,
-    User_ID INT,
-    Account VARCHAR(255),
-    Payment_Method VARCHAR(255),
-    Payment_Status VARCHAR(255),
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
 );
 
 CREATE TABLE Car (
@@ -129,6 +88,66 @@ CREATE TABLE Truck (
     FOREIGN KEY (VIN) REFERENCES Car(VIN)
 );
 
+CREATE TABLE AuctionCar (
+	Auction_id INT,
+    VIN VARCHAR(17),
+	Unsold BOOLEAN, 
+    Reserve_Price DECIMAL(10, 2),
+	Start_Bid DECIMAL(10, 2),
+    SoldPrice DECIMAL(10, 2),
+	FOREIGN KEY (Auction_id) REFERENCES Auction(Auction_ID),
+	FOREIGN KEY (VIN) REFERENCES Car(VIN)
+);
+
+CREATE TABLE Bid (
+    Bid_ID INT PRIMARY KEY,
+    User_ID INT,
+    Auction_ID INT,
+    Bid_Amount DECIMAL(10, 2),
+    Bid_Time DATETIME,
+    VIN VARCHAR(17),
+    BIDWIN BOOLEAN,
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
+    FOREIGN KEY (Auction_ID) REFERENCES Auction(Auction_ID)
+);
+
+CREATE TABLE Orders (
+    Order_ID INT PRIMARY KEY,
+    Time DATETIME,
+    Bidder INT,
+    Seller INT,
+    O_Price DECIMAL(10, 2),
+    Payment_Method VARCHAR(255),
+    VIN VARCHAR(17),
+    Auction_ID INT,
+    FOREIGN KEY (Bidder) REFERENCES Users(User_ID),
+    FOREIGN KEY (Seller) REFERENCES Users(User_ID),
+    FOREIGN KEY (Auction_ID) REFERENCES Auction(Auction_ID)
+);
+
+CREATE TABLE UserFeedback (
+    Case_ID INT PRIMARY KEY,
+--     Seller_ID INT,
+--     FName VARCHAR(255),
+--     LName VARCHAR(255),
+    Feedback VARCHAR(255),
+    Category VARCHAR(255),
+    ProvideFB_User_ID INT,
+    FOREIGN KEY (ProvideFB_User_ID) REFERENCES Users(User_ID)
+--     FOREIGN KEY (FName) REFERENCES Users(FirstN),
+--     FOREIGN KEY (LName) REFERENCES Users(LastN)
+);
+
+CREATE TABLE Payment (
+    Payment_ID INT PRIMARY KEY,
+    User_ID INT,
+--     Account VARCHAR(255),
+    Payment_Method VARCHAR(255),
+    Payment_Status VARCHAR(255),
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
+);
+
+
 CREATE TABLE Report (
     Report_ID INT PRIMARY KEY,
     VIN VARCHAR(17),
@@ -161,13 +180,15 @@ CREATE TABLE Admin (
 );
 
 CREATE TABLE Manage (
-    Account_ID INT PRIMARY KEY,
-    SSN VARCHAR(11),
-    VIN VARCHAR(17),
-    User_ID INT,
-    FOREIGN KEY (SSN) REFERENCES Admin(SSN),
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
-    FOREIGN KEY (VIN) REFERENCES Car(VIN)
+    Admin_ID INT,
+    Password VARCHAR(255),
+    FOREIGN KEY (Admin_ID) REFERENCES Admin(Admin_ID)
+--     SSN VARCHAR(11),
+--     VIN VARCHAR(17),
+--     User_ID INT,
+--     FOREIGN KEY (SSN) REFERENCES Admin(SSN),
+--     FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
+--     FOREIGN KEY (VIN) REFERENCES Car(VIN)
 );
 
 CREATE TABLE Transaction (
