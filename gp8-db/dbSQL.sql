@@ -57,3 +57,37 @@ WHERE EXISTS (
     WHERE b.User_ID = u.User_ID AND c.Make = 'Honda' AND b.BIDWIN = TRUE
 );
 
+#List all-electric cars’ average sales price
+SELECT AVG(o.O_Price) as AverageSalesPrice
+FROM Electric e
+JOIN Orders o ON e.VIN = o.VIN;
+
+#List all cars that have a history of more than two owners 
+SELECT c.VIN, c.Make, c.Model, c.Year, c.Current_Mileage
+FROM CAR c
+JOIN REPORT r ON c.VIN = r.VIN
+WHERE r.Owner_Count > 2;
+
+#Extract users ‘bidding success time and total bidding times
+SELECT 
+    u.User_ID,
+    u.FirstN,
+    u.LastN,
+    COALESCE(BidWinCount, 0) AS BidWinCount,
+    COALESCE(TotalBidCount, 0) AS TotalBiddingTimes,
+    CASE 
+        WHEN COALESCE(TotalBidCount, 0) > 0 
+        THEN COALESCE(BidWinCount, 0) * 1.0 / COALESCE(TotalBidCount, 1)
+        ELSE 0 
+    END AS SuccessRate
+FROM Users u
+LEFT JOIN (
+    SELECT 
+        User_ID, 
+        COUNT(*) AS TotalBidCount,
+        SUM(CASE WHEN BIDWIN = 1 THEN 1 ELSE 0 END) AS BidWinCount
+    FROM Bid
+    GROUP BY User_ID
+) AS BidCounts ON u.User_ID = BidCounts.User_ID;
+
+

@@ -209,12 +209,13 @@ CREATE TRIGGER CloseAuction
 AFTER UPDATE ON Auction
 FOR EACH ROW 
 BEGIN
-    IF NEW.End_Time <= CURRENT_TIMESTAMP() AND NEW.Unsold = FALSE THEN
+    IF NEW.End_Time <= CURRENT_TIMESTAMP() AND NEW.Auction_Status <> 'CLOSED' THEN
         UPDATE Auction SET Auction_Status = 'CLOSED' WHERE Auction_ID = NEW.Auction_ID;
     END IF;
 END;
 //
 DELIMITER ;
+
 
 -- Add procedure
 DELIMITER $$
