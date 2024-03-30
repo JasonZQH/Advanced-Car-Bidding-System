@@ -1,57 +1,46 @@
 <!DOCTYPE html>
-     <html lang="en">
-     <head>
-      <title>Test MySQL</title>
-      {% load static %}
-      <link rel="stylesheet" type="text/css" href="{% static 'gp8app/home.css' %}?v=2" />
-     </head>
+<html lang="en">
+<head>
+    <title>CarBidding System</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'gp8app/home.css' %}?v=3" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-     <body>
-       <div class="info-box">
-       <h1>GROUP: 8</h1>
-       <p>Group Member: Anning Tian, Pingyi Xu, Qinghao Zhang, Xinmeng Wu (Alphabetical Order)</p>
-       <p>Project Name: CarBidding System</p>
-       <p>Using the below search bar to search the User by entering the user ID</p>
-       </div>
+</head>
+<body>
+    <div class="header">
+        <div class="buttons">
+            <button onclick="location.href='/user_login/'">User Login</button>
+            <button onclick="location.href='/admin_login/'">Admin Login</button>
+            <button onclick="location.href='/register/'">Register</button>
+        </div>
+        <div></div> <!-- This is used to justify buttons to the left -->
+    </div>
 
-     </br>
-       <form action="" method="get">
-       <input type="text" name="search_query" placeholder="Enter User ID">
-       <input type="submit" value="Search">
-       </form>
-     </br>
+    <div class="info-box">
+        <h1>GROUP: 8</h1>
+        <p>Group Member: Anning Tian, Pingyi Xu, Qinghao Zhang, Xinmeng Wu (Alphabetical Order)</p>
+        <p>Project Name: CarBidding System</p>
+    </div>
 
-       <table>
-          <tr>
-            <th>User ID</th>
-            <td>{{ user_id }}</td>
-          </tr>
-          <tr>
-            <th>Gender</th>
-            <td>{{ user_gender }}</td>
-          </tr>
-          <tr>
-            <th>Age</th>
-            <td>{{ user_age }}</td>
-          </tr>
-          <tr>
-            <th>Phone</th>
-            <td>{{ user_phone }}</td>
-          </tr>
-          <tr>
-            <th>Email</th>
-            <td>{{ user_email }}</td>
-          </tr>
-        </table>
-     </br>
-        
-      <button id="changeColor">Change Theme</button>
-     </br>
-     </br>
-      <img src="{% static 'gp8app/images/CarBidding.png' %}?v=1" class="EER" alt="EER Diagram">
-     </br>
-     </br>
-     </br>
-     <script src="{% static 'gp8app/home.js' %}?v=1"></script>
-     </body>
-     </html>
+    <!-- Car Sections -->
+    <div class="car-sections">
+        {% for car in cars %}
+            <div class="car-info">
+                <img src="{{ car.image.url }}" alt="{{ car.make }} {{ car.model }} Image">
+                <div>
+                    <h3>{{ car.make }} {{ car.model }}</h3>
+                    <p><strong>Exterior Color:</strong> {{ car.exterior_color }}</p>
+                    <p><strong>Interior Color:</strong> {{ car.interior_color }}</p>
+                    <p><strong>VIN:</strong> {{ car.vin }}</p>
+                    <p><strong>Fuel:</strong> {{ car.fuel }}</p>
+                    <p><strong>Year:</strong> {{ car.year }}</p>
+                    <p><strong>List Time:</strong> {{ car.list_time }}</p>
+                    <p><strong>List Price:</strong> ${{ car.list_price }}</p>
+                    <p><strong>Current Mileage:</strong> {{ car.current_mileage }} miles</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

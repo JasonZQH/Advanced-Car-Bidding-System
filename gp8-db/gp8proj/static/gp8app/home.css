@@ -1,99 +1,80 @@
+/* General resets for consistency */
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-body{
-    text-align: center;
-    background-color: #F1EFE7;
-    transition: background-color 0.5s ease;
-}
-.bodyColor1{
-    text-align: center;
-    background-color: #d6a9a1;
-    transition: background-color 0.5s ease;
-} 
-.bodyColor2{
-    text-align: center;
-    background-color: #acbba0;
-    transition: background-color 0.5s ease;
-} 
-.bodyColor3{
-    text-align: center;
-    background-color: #c5b8c3;
-    transition: background-color 0.5s ease;
-} 
-.bodyColor4{
-    text-align: center;
-    background-color: #e8d4c9;
-    transition: background-color 0.5s ease;
-} 
-.info-boxColor1{
-    background-color: #b2a49d;
-    transition: background-color 0.5s ease;
-}
-.info-boxColor2{
-    background-color: #9d9b96;
-    transition: background-color 0.5s ease;
-}
-.info-boxColor3{
-    background-color: #aeb3be;
-    transition: background-color 0.5s ease;
-}
-.info-boxColor4{
-    background-color: #b3c3b9;
-    transition: background-color 0.5s ease;
+body {
+  text-align: center;
+  background-color: white;
+  font-family: Arial, sans-serif;
 }
 
+/* Header with login buttons */
+.header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 20px;
+  background: #f7f7f7;
+  border-bottom: 1px solid #eaeaea;
+}
 
+.header .buttons {
+  margin-right: auto;
+}
 
-.search-form {
-    margin: 0 auto;
-    width: 50%; /* Adjust the width as needed */
-  }
-.search-input {
-    width: 70%;
-    padding: 10px;
-    margin: 10px 0; /* Space above and below the search bar */
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.1); /* Soft shadow around the search bar */
-  }
-.search-button {
-    padding: 10px 20px;
-    cursor: pointer;
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.2); /* Shadow effect for the button */
-  }
-.search-button:hover {
-    box-shadow: 0 0 15px 0 rgba(0,0,0,0.3); /* Shadow effect on hover */
-  }
-.info-box {
-    border: 1px solid #000; /* Change the color and thickness of the border as needed */
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); /* Adjust the shadow as needed */
-    padding: 20px; /* Add some padding inside the box */
-    margin-bottom: 20px; /* Add some space below the box */
-  }
+.header button {
+  padding: 5px 15px;
+  margin-right: 10px;
+  cursor: pointer;
+}
 
-.EER {
-    width: 700px;  /* Adjust the width as needed */
-    height: auto;  /* Keeps the aspect ratio */
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-    border-radius: 15px;
+/* Car grid */
+.car-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Flexible grid layout */
+  gap: 20px;
+  padding: 20px;
+  margin: 0 auto; /* Center the grid */
+}
+
+.car-info {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.car-info img {
+  width: 100%; /* ensures the image takes the full width of the card */
+  height: auto; /* adjust height automatically */
+  object-fit: cover; /* cover the area without distorting the aspect ratio */
+}
+
+/* Car details */
+.car-info > div {
+  padding: 10px;
+  text-align: left;
+}
+
+/* Responsive adjustments for fewer items per row on smaller screens */
+@media (max-width: 900px) {
+  .car-sections {
+      grid-template-columns: repeat(3, 1fr);
   }
-table {
-    margin: 0 auto;
-    width: 20%;
-    border-collapse: collapse;
+}
+
+@media (max-width: 700px) {
+  .car-sections {
+      grid-template-columns: repeat(2, 1fr);
   }
-  
-th, td {
-    border: 1px solid black;
-    text-align: left;
-    padding: 8px;
+}
+
+@media (max-width: 500px) {
+  .car-sections {
+      grid-template-columns: 1fr;
   }
-th {
-    background-color: #b3c3b9;
-    color: black;
-  }
-  
-  /* Optional: Add some styling to your table to make it more visually appealing */
-table {
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Soft shadow around the table */
-  }
+}

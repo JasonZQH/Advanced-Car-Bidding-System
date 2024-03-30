@@ -84,7 +84,7 @@ if os.getenv('GAE_APPLICATION', None):
             'ENGINE': 'django.db.backends.mysql',
             'HOST': '/cloudsql/db-group8-415905:us-west1:group8-db',
             'USER': 'root',
-            'PASSWORD': '',
+            'PASSWORD': 'Qweasdzxc098@123',
             'NAME': 'CarBidding',
         }
     }
@@ -94,7 +94,7 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'CarBidding',
             'USER': 'root',
-            'PASSWORD': '',
+            'PASSWORD': 'Qweasdzxc098@123',
             'HOST': '35.227.166.130',
             'PORT': '3306'
         }
@@ -139,3 +139,6 @@ USE_TZ = True
 
 STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
