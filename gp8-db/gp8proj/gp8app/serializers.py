@@ -22,6 +22,7 @@ class BidSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CarSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(use_url=True)
     class Meta:
         model = Car
         fields = '__all__'
