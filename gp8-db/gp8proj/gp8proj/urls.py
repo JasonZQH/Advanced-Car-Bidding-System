@@ -21,11 +21,22 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path('', views.car_info),
-    
-]+ static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('admin/', views.AdminListView.as_view(), name='admin-list'),
+    path('admin/<int:pk>/', views.AdminDetailView.as_view(), name='admin-detail'),
+    path('create-account/', views.create_account, name='create_account'),
+    path('login/', views.login, name='login'),
+    path('auction/', views.AuctionListView.as_view(), name='auction-list'),
+    path('auction/<int:pk>/', views.AuctionDetailView.as_view(), name='auction-detail'),
 
+    path('auctioncar/', views.AuctioncarListView.as_view(), name='auctioncar-list'),
+    path('auctioncar/<int:pk>/', views.AuctioncarDetailView.as_view(), name='auctioncar-detail'),
+
+    # Add similar patterns for other models...
+    path('cars/', views.CarListView.as_view(), name='car-list'),
+
+    path('car/<str:pk>/', views.CarDetailView.as_view(), name='car-detail'),
+
+    # Continue adding paths for other models like Convertible, Electric, etc.
+]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
