@@ -100,3 +100,8 @@ class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
         fields = '__all__'
+
+class UserLoginSerializer(serializers.Serializer):
+    user_id = serializers.CharField()
+    email = serializers.EmailField()
+

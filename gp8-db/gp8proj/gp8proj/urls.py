@@ -23,6 +23,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('car_info/', views.car_info),  # Modified line to include the car_info API endpoint
+    path('api/login', views.user_login, name='user_login'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
