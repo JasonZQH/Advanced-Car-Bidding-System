@@ -5,6 +5,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Users
+from django.core.exceptions import ValidationError
+import traceback
 
 
 
@@ -55,30 +57,69 @@ def admin_login(request):
     
 
 # car upload
+
+
 @api_view(['POST'])
 def add_car(request):
-    car_data = request.data.copy()
-    car_type = car_data.pop('car_type', None)
-    image = request.FILES.get('image', None)
+    print("Request Data:", request.data)
+    print("Request Files:", request.FILES)
 
-    try:
-        car = Car.objects.create(**car_data)
+    car_data = request.data.copy()
+    car_type = car_data.pop('car_type', [None])[0]  # Extract car_type as a string  # Extract car_type and remove it from car_data
+    print("Input Car Type:", car_type)
+    car_serializer = CarSerializer(data=car_data)
+
+    if car_serializer.is_valid():
+        car = car_serializer.save()
+        image = request.FILES.get('image', None)
         if image:
-            car.image.save(image.name, image, save=True)  # Save the image field
+            car.image.save(image.name, image, save=True)
+
+        # Save to the appropriate subtable based on car_type
+        subtable_data = {}
         if car_type == 'Convertible':
-            Convertible.objects.create(vin=car)
+            subtable_data = {'canopymaterial': car_data.get('canopymaterial', '')}
+            print("Convertible Data:", subtable_data)
         elif car_type == 'Electric':
-            Electric.objects.create(vin=car)
+            subtable_data = {'electric_range': car_data.get('electric_range', 0)}
         elif car_type == 'Hybrid':
-            Hybrid.objects.create(vin=car)
+            subtable_data = {
+                'fuel_range': car_data.get('fuel_range', 0),
+                'electric_range': car_data.get('electric_range', 0),
+            }
         elif car_type == 'SUV':
-            Suv.objects.create(vin=car)
+            subtable_data = {'seatnumber': car_data.get('seatnumber', 0)}
         elif car_type == 'Sedan':
-            Sedan.objects.create(vin=car)
+            subtable_data = {'seatnumber': car_data.get('seatnumber', 0)}
+            print("Sedan Data:", subtable_data)
         elif car_type == 'Truck':
-            Truck.objects.create(vin=car)
+            subtable_data = {'boatload': car_data.get('boatload', 0)}
+
+        if subtable_data:
+            subtable_serializer = SUBTABLE_SERIALIZER_MAP[car_type](data={**subtable_data, 'vin': car.vin})
+            print("Subtable Data:", subtable_serializer.initial_data)
+            if subtable_serializer.is_valid():
+                subtable_serializer.save()
+            else:
+                print("Subtable Serializer Errors:", subtable_serializer.errors)
+                return Response(subtable_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
         return Response({'message': 'Car added successfully'}, status=status.HTTP_201_CREATED)
-    except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        print(car_serializer.errors)
+        return Response(car_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# A mapping of car types to their corresponding serializers
+SUBTABLE_SERIALIZER_MAP = {
+    'Convertible': ConvertibleSerializer,
+    'Electric': ElectricSerializer,
+    'Hybrid': HybridSerializer,
+    'SUV': SuvSerializer,
+    'Sedan': SedanSerializer,
+    'Truck': TruckSerializer,
+}
+
+
+
 
 

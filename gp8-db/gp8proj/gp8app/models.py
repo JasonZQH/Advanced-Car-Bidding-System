@@ -97,7 +97,7 @@ class Electric(models.Model):
     class Meta:
         managed = True
         db_table = 'Electric'
-
+ 
 
 class Hybrid(models.Model):
     vin = models.OneToOneField(Car, models.DO_NOTHING, db_column='VIN', primary_key=True)  # Field name made lowercase.
