@@ -6,6 +6,10 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.utils import timezone
+
+def get_current_date():
+    return timezone.now().date()
 
 
 class Admin(models.Model):
@@ -15,7 +19,7 @@ class Admin(models.Model):
     birthdate = models.DateField(db_column='Birthdate')  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Admin'
 
 
@@ -28,7 +32,7 @@ class Auction(models.Model):
     attend_user = models.ForeignKey('Users', models.DO_NOTHING, db_column='Attend_User_ID', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Auction'
 
 
@@ -41,7 +45,7 @@ class Auctioncar(models.Model):
     soldprice = models.DecimalField(db_column='SoldPrice', max_digits=10, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'AuctionCar'
 
 
@@ -55,7 +59,7 @@ class Bid(models.Model):
     bidwin = models.IntegerField(db_column='BIDWIN', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Bid'
 
 
@@ -82,7 +86,7 @@ class Convertible(models.Model):
     canopymaterial = models.CharField(db_column='CanopyMaterial', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Convertible'
 
 
@@ -91,7 +95,7 @@ class Electric(models.Model):
     electric_range = models.IntegerField(db_column='Electric_Range', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Electric'
 
 
@@ -101,7 +105,7 @@ class Hybrid(models.Model):
     electric_range = models.IntegerField(db_column='Electric_Range', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Hybrid'
 
 
@@ -110,7 +114,7 @@ class Manage(models.Model):
     password = models.CharField(db_column='Password', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Manage'
 
 
@@ -125,7 +129,7 @@ class Orders(models.Model):
     auction = models.ForeignKey(Auction, models.DO_NOTHING, db_column='Auction_ID', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Orders'
 
 
@@ -136,7 +140,7 @@ class Payment(models.Model):
     payment_status = models.CharField(db_column='Payment_Status', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Payment'
 
 
@@ -151,7 +155,7 @@ class Report(models.Model):
     owner_count = models.IntegerField(db_column='Owner_Count', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Report'
 
 
@@ -160,7 +164,7 @@ class Suv(models.Model):
     seatnumber = models.IntegerField(db_column='SeatNumber', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'SUV'
 
 
@@ -169,7 +173,7 @@ class Sedan(models.Model):
     seatnumber = models.IntegerField(db_column='SeatNumber', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Sedan'
 
 
@@ -182,7 +186,7 @@ class Shipping(models.Model):
     approved_payment = models.ForeignKey(Payment, models.DO_NOTHING, db_column='Approved_Payment_ID', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Shipping'
 
 
@@ -195,7 +199,7 @@ class Transaction(models.Model):
     transaction_amount = models.DecimalField(db_column='Transaction_Amount', max_digits=10, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Transaction'
 
 
@@ -204,7 +208,7 @@ class Truck(models.Model):
     boatload = models.IntegerField(db_column='BoatLoad', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Truck'
 
 
@@ -215,7 +219,7 @@ class Userfeedback(models.Model):
     providefb_user = models.ForeignKey('Users', models.DO_NOTHING, db_column='ProvideFB_User_ID', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'UserFeedback'
 
 
@@ -228,26 +232,26 @@ class Userpreference(models.Model):
     allowed_sending_text = models.IntegerField(db_column='Allowed_Sending_text', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'UserPreference'
 
 
 class Users(models.Model):
-    user_id = models.IntegerField(db_column='User_ID', primary_key=True)  # Field name made lowercase.
-    email = models.CharField(db_column='Email', unique=True, max_length=255, blank=True, null=True)  # Field name made lowercase.
-    phone_number = models.CharField(db_column='Phone_Number', max_length=20, blank=True, null=True)  # Field name made lowercase.
-    gender = models.CharField(db_column='Gender', max_length=1, blank=True, null=True)  # Field name made lowercase.
-    age = models.IntegerField(db_column='Age', blank=True, null=True)  # Field name made lowercase.
-    lastn = models.CharField(db_column='LastN', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    firstn = models.CharField(db_column='FirstN', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    seller = models.IntegerField(db_column='Seller', blank=True, null=True)  # Field name made lowercase.
-    bidder = models.IntegerField(db_column='Bidder', blank=True, null=True)  # Field name made lowercase.
-    active_date = models.DateField(db_column='Active_Date', blank=True, null=True)  # Field name made lowercase.
-    street = models.CharField(db_column='Street', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    state = models.CharField(db_column='State', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    zip = models.CharField(db_column='ZIP', max_length=20, blank=True, null=True)  # Field name made lowercase.
-    country = models.CharField(db_column='Country', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    user_id = models.AutoField(db_column='User_ID', primary_key=True)  # Auto-generated primary key
+    email = models.CharField(db_column='Email', unique=True, max_length=255, blank=True, null=True)
+    phone_number = models.CharField(db_column='Phone_Number', max_length=20, blank=True, null=True)
+    gender = models.CharField(db_column='Gender', max_length=1, blank=True, null=True)
+    age = models.IntegerField(db_column='Age', blank=True, null=True)
+    lastn = models.CharField(db_column='LastN', max_length=255, blank=True, null=True)
+    firstn = models.CharField(db_column='FirstN', max_length=255, blank=True, null=True)
+    seller = models.BooleanField(db_column='Seller', default=False)  # Boolean field with default False
+    bidder = models.BooleanField(db_column='Bidder', default=False)  # Boolean field with default False
+    active_date = models.DateField(db_column='Active_Date', default=get_current_date)  # Default to current date
+    street = models.CharField(db_column='Street', max_length=255, blank=True, null=True)
+    state = models.CharField(db_column='State', max_length=255, blank=True, null=True)
+    zip = models.CharField(db_column='ZIP', max_length=20, blank=True, null=True)
+    country = models.CharField(db_column='Country', max_length=255, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Users'

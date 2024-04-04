@@ -101,3 +101,4 @@ class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
         fields = '__all__'
+        read_only_fields = ['user_id', 'active_date']
