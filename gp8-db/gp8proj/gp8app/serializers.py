@@ -10,12 +10,12 @@ class AuctionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Auction
         fields = '__all__'
-
+'''
 class AuctioncarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Auctioncar
         fields = '__all__'
-
+'''
 class BidSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bid
@@ -26,6 +26,13 @@ class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = '__all__'
+
+class AuctioncarSerializer(serializers.ModelSerializer):
+    vin = CarSerializer(read_only=True)  # Assuming 'vin' is the related name for the Car model
+    
+    class Meta:
+        model = Auctioncar
+        fields = ('auction', 'vin', 'unsold', 'reserve_price', 'start_bid', 'soldprice')
 
 class ConvertibleSerializer(serializers.ModelSerializer):
     class Meta:

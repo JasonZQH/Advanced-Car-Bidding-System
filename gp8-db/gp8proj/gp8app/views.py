@@ -119,7 +119,24 @@ SUBTABLE_SERIALIZER_MAP = {
     'Truck': TruckSerializer,
 }
 
-
+@api_view(['GET'])
+def auction_cars(request, vin):
+    try:
+        auction_car = Auctioncar.objects.get(vin__vin=vin)
+        auction_id = auction_car.auction.auction_id
+        
+        auction_cars = Auctioncar.objects.filter(auction__auction_id=auction_id)
+        
+        vins = auction_cars.values_list('vin', flat=True)
+        
+        cars = Car.objects.filter(vin__in=vins)
+        
+        serializer = CarSerializer(cars, many=True)
+        return Response(serializer.data)
+    except Auctioncar.DoesNotExist:
+        return Response({'error': 'Car with the specified VIN does not exist or is not associated with any auction.'}, status=404)
+    except Car.DoesNotExist:
+        return Response({'error': 'No cars found in the specified auction.'}, status=404)
 
 
 
