@@ -17,6 +17,7 @@ class AuctioncarSerializer(serializers.ModelSerializer):
         fields = '__all__'
 '''
 class BidSerializer(serializers.ModelSerializer):
+    bid_id = serializers.IntegerField(required=False)
     class Meta:
         model = Bid
         fields = '__all__'

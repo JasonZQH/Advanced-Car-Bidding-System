@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from .models import Users
 from django.core.exceptions import ValidationError
 import traceback
+from django.utils import timezone
+from django.db.models import Max
 
 
 
@@ -124,19 +126,40 @@ def auction_cars(request, vin):
     try:
         auction_car = Auctioncar.objects.get(vin__vin=vin)
         auction_id = auction_car.auction.auction_id
-        
+
         auction_cars = Auctioncar.objects.filter(auction__auction_id=auction_id)
         
         vins = auction_cars.values_list('vin', flat=True)
         
         cars = Car.objects.filter(vin__in=vins)
-        
+
         serializer = CarSerializer(cars, many=True)
-        return Response(serializer.data)
+        response_data = {
+            'auction_id': auction_id,
+            'cars': serializer.data
+        }
+        return Response(response_data)
     except Auctioncar.DoesNotExist:
         return Response({'error': 'Car with the specified VIN does not exist or is not associated with any auction.'}, status=404)
     except Car.DoesNotExist:
         return Response({'error': 'No cars found in the specified auction.'}, status=404)
 
+@api_view(['POST'])
+def submit_bid(request):
+    if request.method == 'POST':
+        max_bid_id = Bid.objects.aggregate(max_id=Max('bid_id'))['max_id']
+        new_bid_id = 1 if max_bid_id is None else max_bid_id + 1
 
+        serializer = BidSerializer(data=request.data)
+        if serializer.is_valid():
+            bid_data = serializer.validated_data
+            bid_instance = Bid(**bid_data)
+            bid_instance.bid_id = new_bid_id
+            bid_instance.bid_time = timezone.now()
+            bid_instance.bidwin = False
+            bid_instance.save()
+
+            return Response({'message': 'Bid submitted successfully', 'bid_id': new_bid_id})
+        else:
+            return Response(serializer.errors, status=400)
 
