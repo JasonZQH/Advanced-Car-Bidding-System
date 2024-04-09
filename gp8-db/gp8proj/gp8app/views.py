@@ -162,4 +162,10 @@ def submit_bid(request):
             return Response({'message': 'Bid submitted successfully', 'bid_id': new_bid_id})
         else:
             return Response(serializer.errors, status=400)
+        
+@api_view(['GET'])
+def receive_bid(request):
+    bids = Bid.objects.all()
+    serializer = BidSerializer(bids, many=True)
+    return Response(serializer.data)
 

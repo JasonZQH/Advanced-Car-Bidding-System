@@ -28,6 +28,7 @@ urlpatterns = [
     path('add-car/', views.add_car, name='add-car'),
     path('api/auction/<str:vin>/', views.auction_cars, name='auction_cars'),
     path('api/bid/', views.submit_bid, name='submit_bid'),
+    path('api/receive_bid/', views.receive_bid, name='receive_bid'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
