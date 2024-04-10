@@ -38,7 +38,7 @@ class Auction(models.Model):
 
 class Auctioncar(models.Model):
     auction = models.ForeignKey(Auction, models.DO_NOTHING, db_column='Auction_id', blank=True, null=True)  # Field name made lowercase.
-    vin = models.ForeignKey('Car', models.DO_NOTHING, db_column='VIN', blank=True, null=True)  # Field name made lowercase.
+    vin = models.ForeignKey('Car', db_column='VIN', blank=True, null=True, on_delete=models.CASCADE)  # Field name made lowercase.
     unsold = models.IntegerField(db_column='Unsold', blank=True, null=True)  # Field name made lowercase.
     reserve_price = models.DecimalField(db_column='Reserve_Price', max_digits=10, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
     start_bid = models.DecimalField(db_column='Start_Bid', max_digits=10, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
@@ -169,7 +169,7 @@ class Suv(models.Model):
 
 
 class Sedan(models.Model):
-    vin = models.OneToOneField(Car, models.DO_NOTHING, db_column='VIN', primary_key=True)  # Field name made lowercase.
+    vin = models.OneToOneField(Car, models.CASCADE, db_column='VIN', primary_key=True)  # Field name made lowercase.
     seatnumber = models.IntegerField(db_column='SeatNumber', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:

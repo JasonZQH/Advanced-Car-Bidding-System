@@ -1,6 +1,10 @@
 from rest_framework import serializers
 from .models import Admin, Auction, Auctioncar, Bid, Car, Convertible, Electric, Hybrid, Manage, Orders, Payment, Report, Suv, Sedan, Shipping, Transaction, Truck, Userfeedback, Userpreference, Users
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class AdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Admin
@@ -30,10 +34,24 @@ class CarSerializer(serializers.ModelSerializer):
 
 class AuctioncarSerializer(serializers.ModelSerializer):
     vin = CarSerializer(read_only=True)  # Assuming 'vin' is the related name for the Car model
-    
+    latest_bid = serializers.SerializerMethodField()
+    # highest_bid = serializers.SerializerMethodField()
     class Meta:
         model = Auctioncar
-        fields = ('auction', 'vin', 'unsold', 'reserve_price', 'start_bid', 'soldprice')
+        fields = ('vin','auction', 'unsold', 'reserve_price', 'start_bid', 'soldprice', 'latest_bid')
+    
+    def get_vin(self, obj):
+        return str(obj.vin)  # Convert obj.vin to string
+
+    def get_latest_bid(self, obj):
+        print(f"Debug: obj.vin = {obj.vin}")
+        latest_bid = Bid.objects.filter(vin=obj.vin).order_by('-bid_time').first()
+        return latest_bid.bid_amount if latest_bid else None
+
+    # def get_highest_bid(self, obj):
+    #     print(f"Debug: obj.vin = {obj.vin}")
+    #     highest_bid = Bid.objects.filter(vin=obj.vin).order_by('-bid_amount').first()
+    #     return highest_bid.bid_amount if highest_bid else None
 
 class ConvertibleSerializer(serializers.ModelSerializer):
     class Meta:

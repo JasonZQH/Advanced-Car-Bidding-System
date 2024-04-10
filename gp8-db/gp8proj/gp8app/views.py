@@ -11,7 +11,10 @@ from django.utils import timezone
 from django.db.models import Max
 from django.utils import timezone
 from django.db.models import Max
+import logging
 
+
+logger = logging.getLogger(__name__)
 
 
 # show all cars
@@ -61,8 +64,6 @@ def admin_login(request):
     
 
 # car upload
-
-
 @api_view(['POST'])
 def add_car(request):
     print("Request Data:", request.data)
@@ -123,48 +124,75 @@ SUBTABLE_SERIALIZER_MAP = {
     'Truck': TruckSerializer,
 }
 
-
-# Delete a car (Admin)
+# Delete a Car
 @api_view(['DELETE'])
 def delete_car(request, vin):
+    logger.info(f'Received request to delete car with VIN: {vin}')
     try:
         car = Car.objects.get(vin=vin)
+        logger.info(f'Car found: {car}')
         car.delete()
+        logger.info('Car deleted successfully')
         return Response({'message': 'Car deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
     except Car.DoesNotExist:
+        logger.error(f'Car with VIN {vin} not found')
         return Response({'error': 'Car not found'}, status=status.HTTP_404_NOT_FOUND)
-    
+
+
+# Find Auction Cars
+# @api_view(['GET'])
+# def auction_cars(request, vin):
+#     try:
+#         auction_car = Auctioncar.objects.get(vin__vin=vin)
+#         auction_id = auction_car.auction.auction_id
+
+
+#         auction_cars = Auctioncar.objects.filter(auction__auction_id=auction_id)
+        
+#         vins = auction_cars.values_list('vin', flat=True)
+        
+#         cars = Car.objects.filter(vin__in=vins)
+
+
+#         serializer = CarSerializer(cars, many=True)
+#         response_data = {
+#             'auction_id': auction_id,
+#             'cars': serializer.data
+#         }
+#         return Response(response_data)
+#     except Auctioncar.DoesNotExist:
+#         return Response({'error': 'Car with the specified VIN does not exist or is not associated with any auction.'}, status=404)
+#     except Car.DoesNotExist:
+#         return Response({'error': 'No cars found in the specified auction.'}, status=404)
+
+from django.shortcuts import get_object_or_404
 
 @api_view(['GET'])
 def auction_cars(request, vin):
-    try:
-        auction_car = Auctioncar.objects.get(vin__vin=vin)
-        auction_id = auction_car.auction.auction_id
+    # Find the auction car using the provided VIN
+    auction_car = get_object_or_404(Auctioncar, vin__vin=vin)
+    auction_id = auction_car.auction.auction_id
+
+    # Fetch all cars associated with the auction
+    auction_cars = Auctioncar.objects.filter(auction__auction_id=auction_id)
+
+    # Serialize the auction cars with their auction-specific details
+    auction_cars_serializer = AuctioncarSerializer(auction_cars, many=True)
+
+    # Fetch and serialize the related car details
+    car_vins = [ac.vin.vin for ac in auction_cars]
+    cars = Car.objects.filter(vin__in=car_vins)
+    car_serializer = CarSerializer(cars, many=True)
+
+    response_data = {
+        'auction_id': auction_id,
+        'auction_cars': auction_cars_serializer.data,
+        'car_details': car_serializer.data
+    }
+    return Response(response_data)
 
 
-        auction_cars = Auctioncar.objects.filter(auction__auction_id=auction_id)
-        
-        vins = auction_cars.values_list('vin', flat=True)
-        
-        cars = Car.objects.filter(vin__in=vins)
-
-
-        serializer = CarSerializer(cars, many=True)
-        response_data = {
-            'auction_id': auction_id,
-            'cars': serializer.data
-        }
-        return Response(response_data)
-        response_data = {
-            'auction_id': auction_id,
-            'cars': serializer.data
-        }
-        return Response(response_data)
-    except Auctioncar.DoesNotExist:
-        return Response({'error': 'Car with the specified VIN does not exist or is not associated with any auction.'}, status=404)
-    except Car.DoesNotExist:
-        return Response({'error': 'No cars found in the specified auction.'}, status=404)
-
+# Submit a bid
 @api_view(['POST'])
 def submit_bid(request):
     if request.method == 'POST':
@@ -183,10 +211,15 @@ def submit_bid(request):
             return Response({'message': 'Bid submitted successfully', 'bid_id': new_bid_id})
         else:
             return Response(serializer.errors, status=400)
-        
+
+# Receive a bid  
 @api_view(['GET'])
 def receive_bid(request):
-    bids = Bid.objects.all()
+    vin = request.query_params.get('vin')
+    if vin:
+        bids = Bid.objects.filter(vin=vin)
+    else:
+        bids = Bid.objects.all()
     serializer = BidSerializer(bids, many=True)
     return Response(serializer.data)
 
