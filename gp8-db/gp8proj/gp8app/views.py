@@ -9,6 +9,8 @@ from django.core.exceptions import ValidationError
 import traceback
 from django.utils import timezone
 from django.db.models import Max
+from django.utils import timezone
+from django.db.models import Max
 
 
 
@@ -139,13 +141,20 @@ def auction_cars(request, vin):
         auction_car = Auctioncar.objects.get(vin__vin=vin)
         auction_id = auction_car.auction.auction_id
 
+
         auction_cars = Auctioncar.objects.filter(auction__auction_id=auction_id)
         
         vins = auction_cars.values_list('vin', flat=True)
         
         cars = Car.objects.filter(vin__in=vins)
 
+
         serializer = CarSerializer(cars, many=True)
+        response_data = {
+            'auction_id': auction_id,
+            'cars': serializer.data
+        }
+        return Response(response_data)
         response_data = {
             'auction_id': auction_id,
             'cars': serializer.data
@@ -159,34 +168,25 @@ def auction_cars(request, vin):
 @api_view(['POST'])
 def submit_bid(request):
     if request.method == 'POST':
-        # 查询当前最大的 Bid_id
         max_bid_id = Bid.objects.aggregate(max_id=Max('bid_id'))['max_id']
-        
-        # 如果数据库为空，则设置 Bid_id 为 1，否则加 1
         new_bid_id = 1 if max_bid_id is None else max_bid_id + 1
 
         serializer = BidSerializer(data=request.data)
         if serializer.is_valid():
-            # 创建 Bid 实例，但不保存到数据库
             bid_data = serializer.validated_data
-            bid_instance = Bid(**bid_data) # 根据具体模型字段调整
-            # 手动设置 Bid_id
+            bid_instance = Bid(**bid_data)
             bid_instance.bid_id = new_bid_id
             bid_instance.bid_time = timezone.now()
             bid_instance.bidwin = False
-            # 保存到数据库
             bid_instance.save()
 
             return Response({'message': 'Bid submitted successfully', 'bid_id': new_bid_id})
         else:
-            print("Serializer errors:", serializer.errors)
             return Response(serializer.errors, status=400)
-
+        
 @api_view(['GET'])
 def receive_bid(request):
     bids = Bid.objects.all()
     serializer = BidSerializer(bids, many=True)
     return Response(serializer.data)
-
-
 
