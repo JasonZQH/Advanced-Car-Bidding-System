@@ -17,8 +17,28 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from gp8app import views
+<<<<<<< Updated upstream
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', views.testmysql),
+=======
+from django.conf import settings
+from django.conf.urls.static import static
+# from .views import ReactAppView
+
+
+urlpatterns = [
+    path('api/create-account/', views.create_account, name='create_account'),
+    path('login/', views.login, name='login'),
+    path('cars/', views.CarListView.as_view(), name='car-list'),
+    path('admin-login/', views.admin_login, name='admin-login'),
+    path('add-car/', views.add_car, name='add-car'),
+    path('api/auction/<str:vin>/', views.auction_cars, name='auction_cars'),
+    path('api/bid/', views.submit_bid, name='submit_bid'),
+    path('api/receive_bid/', views.receive_bid, name='receive_bid'),
+    path('api/delete_car/<str:vin>/', views.delete_car, name='delete_car'),
+    path('', views.ReactAppView.as_view(), name='app'),
+    # path(r'^.*$', views.ReactAppView.as_view(), name='app'),
+>>>>>>> Stashed changes
 ]
