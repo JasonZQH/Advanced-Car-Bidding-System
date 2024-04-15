@@ -52,7 +52,20 @@ VALUES
 ('1HGCM82633A004358', 'Black', 'Gray', 'Kia', 'Optima', 'Gasoline', 2020, '2024-03-05 14:00:00', 20000.00, 18000),
 ('1HGCM82633A004359', 'White', 'Black', 'Volkswagen', 'Passat', 'Hybrid', 2017, '2024-03-04 15:00:00', 13000.00, 40000),
 ('1HGCM82633A004360', 'Silver', 'Gray', 'BMW', '3 Series', 'Electric', 2018, '2024-03-03 16:00:00', 25000.00, 15000),
-('1HGCM82633A004361', 'Red', 'Black', 'Audi', 'A4', 'Gasoline', 2019, '2024-03-02 17:00:00', 27000.00, 12000);
+('1HGCM82633A004361', 'Red', 'Black', 'Audi', 'A4', 'Gasoline', 2019, '2024-03-02 17:00:00', 27000.00, 12000),
+('1HGCM82633A004362', 'Blue', 'Black', 'Mazda', '6', 'Gasoline', 2018, '2024-03-01 10:00:00', 16000.00, 24000),
+('1HGCM82633A004363', 'Green', 'Gray', 'Toyota', 'Prius', 'Hybrid', 2020, '2024-02-28 09:00:00', 19000.00, 21000),
+('1HGCM82633A004364', 'Black', 'Black', 'Tesla', 'Model 3', 'Electric', 2021, '2024-02-27 08:00:00', 30000.00, 10000),
+('1HGCM82633A004365', 'White', 'Gray', 'Honda', 'Civic', 'Gasoline', 2019, '2024-02-26 11:00:00', 17000.00, 27000),
+('1HGCM82633A004366', 'Red', 'Black', 'Ford', 'Mustang', 'Gasoline', 2020, '2024-02-25 12:00:00', 25000.00, 15000),
+('1HGCM82633A004367', 'Blue', 'Gray', 'Chevrolet', 'Volt', 'Electric', 2018, '2024-02-24 13:00:00', 18000.00, 22000),
+('1HGCM82633A004368', 'Silver', 'Black', 'Nissan', 'Leaf', 'Electric', 2019, '2024-02-23 14:00:00', 20000.00, 18000),
+('1HGCM82633A004369', 'Gray', 'Gray', 'Hyundai', 'Elantra', 'Gasoline', 2017, '2024-02-22 15:00:00', 14000.00, 30000),
+('1HGCM82633A004370', 'Black', 'Black', 'Kia', 'Soul', 'Electric', 2021, '2024-02-21 16:00:00', 21000.00, 12000),
+('1HGCM82633A004371', 'White', 'Gray', 'Volkswagen', 'Golf', 'Hybrid', 2020, '2024-02-20 17:00:00', 22000.00, 16000),
+('1N4AL11D42C121723', 'Black', 'Black', 'Bugatti', 'Chiron', 'Gasoline', 2023, '2024-03-25 20:00:00', 4300000.00, 109),
+('1TAN0000000000000', 'Yellow', 'Black', ' Chevrolet', 'Corvette', 'Gasoline', 2023, '2024-04-14 17:00:00', 180000.00, 715),
+('1XPY1111111111111', 'Red', 'Black', 'Ferrari', '', 'LaFerrari', 'Gasoline', 2020, '2024-02-20 17:00:00', 2000000.00, 111);
 
 INSERT INTO Sedan (VIN, SeatNumber)
 VALUES
