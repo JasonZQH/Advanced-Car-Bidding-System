@@ -1,2 +1,2 @@
 # Car Bidding System
- Full-stack Development for a auction platform
+ Full-stack Development for an auction platform
