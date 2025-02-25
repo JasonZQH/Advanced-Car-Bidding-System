@@ -1,2 +1,2 @@
-# CS5200CarBidding
- Group8
+# Car Bidding System
+ Full-stack Development for a auction platform
